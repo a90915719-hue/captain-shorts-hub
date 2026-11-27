@@ -1,0 +1,25 @@
+{
+  "name": "CAPTAIN SHORTS HUB · 캡틴 AI 쇼츠 본부",
+  "short_name": "캡틴쇼츠본부",
+  "description": "1호기·2호기·피클비서 유튜브 쇼츠 실시간 검수 · 원터치 복사 · 1초 설치 모바일 앱",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090d1a",
+  "theme_color": "#090d1a",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
