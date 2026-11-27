@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#090d1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="캡틴쇼츠본부">
+<title>CAPTAIN SHORTS HUB · 캡틴 AI 쇼츠 본부</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<style>
+:root {
+  --bg: #090d1a;
+  --card: #121a2f;
+  --card2: #18233f;
+  --border: rgba(255, 215, 102, 0.22);
+  --gold: #facc15;
+  --gold2: #fde047;
+  --pink: #f43f5e;
+  --cyan: #38bdf8;
+  --green: #34d399;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background: radial-gradient(circle at top center, #1a1f3c 0%, var(--bg) 55%);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 92px;
+}
+.wrap { max-width: 540px; margin: 0 auto; padding: 14px 14px 28px; }
+
+/* Install Banner */
+.install-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: linear-gradient(135deg, rgba(250,204,21,0.18), rgba(244,63,94,0.22));
+  border: 1.5px solid var(--gold);
+  border-radius: 16px; padding: 11px 13px; margin-bottom: 14px;
+  box-shadow: 0 8px 24px rgba(250,204,21,0.12);
+}
+.install-bar.hidden { display: none; }
+.install-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.install-left img { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid var(--gold); flex-shrink: 0; }
+.install-txt strong { display: block; font-size: 13.5px; color: var(--gold2); }
+.install-txt span { display: block; font-size: 11.5px; color: #e2e8f0; margin-top: 2px; }
+.btn-install {
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  color: #090d1a; border: none; border-radius: 12px;
+  padding: 9px 14px; font-weight: 900; font-size: 13px;
+  white-space: nowrap; cursor: pointer; flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(250,204,21,0.35);
+}
+
+/* Header */
+.hero {
+  display: flex; align-items: center; gap: 14px;
+  background: linear-gradient(145deg, #131c34, #0d1326);
+  border: 1px solid var(--border);
+  border-radius: 22px; padding: 16px; margin-bottom: 14px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+}
+.hero-logo {
+  width: 68px; height: 68px; border-radius: 18px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 6px 20px rgba(250,204,21,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.hero-info { flex: 1; min-width: 0; }
+.hero-badge {
+  display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px;
+  background: rgba(244,63,94,0.2); color: #fda4af; border: 1px solid rgba(244,63,94,0.45);
+  padding: 2px 8px; border-radius: 999px; margin-bottom: 5px;
+}
+.hero h1 { font-size: 19px; font-weight: 900; letter-spacing: -0.3px; color: #fff; }
+.hero p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.btn-sync {
+  background: rgba(56,189,248,0.16); color: var(--cyan);
+  border: 1px solid rgba(56,189,248,0.45); border-radius: 12px;
+  padding: 9px 11px; font-size: 12px; font-weight: 800; cursor: pointer;
+}
+
+/* Tabs */
+.tabs {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  background: #0e1528; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px; padding: 6px; margin-bottom: 14px;
+}
+.tab {
+  border: none; background: transparent; color: var(--muted);
+  font-size: 13px; font-weight: 800; padding: 10px 6px; border-radius: 12px;
+  cursor: pointer; transition: all 0.18s;
+}
+.tab.active {
+  background: linear-gradient(135deg, #facc15, #f59e0b);
+  color: #090d1a; box-shadow: 0 4px 12px rgba(250,204,21,0.3);
+}
+
+/* Cards */
+.list { display: flex; flex-direction: column; gap: 14px; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+}
+.card-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 12px 14px 8px;
+}
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 800;
+  padding: 3px 9px; border-radius: 999px;
+  background: rgba(250,204,21,0.16); color: var(--gold2);
+  border: 1px solid rgba(250,204,21,0.35);
+}
+.tag.pc2 { background: rgba(56,189,248,0.16); color: #7dd3fc; border-color: rgba(56,189,248,0.38); }
+.date-lbl { font-size: 11.5px; color: var(--muted); font-weight: 600; }
+.card-title {
+  padding: 0 14px 10px; font-size: 15.5px; font-weight: 800; line-height: 1.4; color: #fff;
+}
+.media-box {
+  position: relative; background: #000; width: 100%;
+  display: flex; justify-content: center; align-items: center;
+}
+.media-box video {
+  width: 100%; max-height: 440px; aspect-ratio: 9/16; object-fit: contain; background: #000;
+}
+.card-actions {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  padding: 12px 14px 14px;
+}
+.act {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  border: none; border-radius: 12px; padding: 11px 10px;
+  font-size: 13px; font-weight: 800; cursor: pointer; text-decoration: none;
+}
+.act.gold { background: linear-gradient(135deg, #facc15, #f59e0b); color: #090d1a; }
+.act.blue { background: #2563eb; color: #fff; }
+.act.dark { background: #1e293b; color: #e2e8f0; border: 1px solid rgba(255,255,255,0.12); }
+.act.pink { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; }
+
+/* Docs Viewer */
+.doc-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 16px; margin-bottom: 12px;
+}
+.doc-card h3 { font-size: 15px; color: var(--gold2); margin-bottom: 10px; }
+.doc-pre {
+  background: #0b1020; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 12px; font-size: 12.5px; line-height: 1.6;
+  color: #cbd5e1; white-space: pre-wrap; word-break: break-word;
+  max-height: 360px; overflow-y: auto;
+}
+
+/* Modal for iOS / Kakao 1-sec install */
+.modal-bg {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+  display: none; align-items: flex-end; justify-content: center; z-index: 999; padding: 14px;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  width: 100%; max-width: 480px; background: #131c34;
+  border: 2px solid var(--gold); border-radius: 24px; padding: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+.modal h2 { font-size: 17px; color: var(--gold2); margin-bottom: 10px; }
+.modal p { font-size: 13.5px; line-height: 1.6; color: #e2e8f0; margin-bottom: 12px; }
+.step-box {
+  background: #0b1122; border-radius: 14px; padding: 12px; margin-bottom: 14px;
+  font-size: 13px; line-height: 1.7; color: #f8fafc;
+}
+.modal-close {
+  width: 100%; background: var(--gold); color: #090d1a; border: none;
+  border-radius: 14px; padding: 12px; font-size: 14.5px; font-weight: 900; cursor: pointer;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: rgba(15,23,42,0.96); color: var(--gold2);
+  border: 1.5px solid var(--gold); border-radius: 999px;
+  padding: 10px 18px; font-size: 13px; font-weight: 800;
+  opacity: 0; pointer-events: none; transition: all 0.22s; z-index: 1000;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.loading { text-align: center; padding: 28px; color: var(--muted); font-size: 13.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- 1-Sec Install Banner -->
+  <div id="installBar" class="install-bar">
+    <div class="install-left">
+      <img src="./icon-192.png" alt="CAPTAIN SHORTS HUB">
+      <div class="install-txt">
+        <strong>📱 폰 바탕화면에 1초 앱 설치</strong>
+        <span id="installSub">스토어 심사 없이 홈 화면 아이콘으로 바로 실행</span>
+      </div>
+    </div>
+    <button id="btnInstall" class="btn-install">1초 설치</button>
+  </div>
+
+  <!-- Brand Header -->
+  <header class="hero">
+    <img class="hero-logo" src="./icon-192.png" alt="Logo">
+    <div class="hero-info">
+      <span class="hero-badge">CAPTAIN AI STUDIO · LIVE</span>
+      <h1>CAPTAIN SHORTS HUB</h1>
+      <p>1호기 · 2호기 · 피클비서 실시간 쇼츠 검수 본부</p>
+    </div>
+    <button class="btn-sync" onclick="refreshAll()">↻ 새로고침</button>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="outbox_1" onclick="switchTab('outbox_1')">🔥 1호기 쇼츠</button>
+    <button class="tab" data-tab="outbox_2" onclick="switchTab('outbox_2')">⚡ 2호기 쇼츠</button>
+    <button class="tab" data-tab="docs" onclick="switchTab('docs')">📬 지시서</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="content" class="list">
+    <div class="loading">최신 쇼츠 목록을 불러오는 중...</div>
+  </main>
+</div>
+
+<!-- iOS / Kakao Guide Modal -->
+<div id="installModal" class="modal-bg" onclick="if(event.target===this) closeModal()">
+  <div class="modal">
+    <h2 id="modalTitle">📱 1초 앱 설치 안내</h2>
+    <p id="modalDesc"></p>
+    <div id="modalSteps" class="step-box"></div>
+    <button class="modal-close" onclick="closeModal()">확인</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const OWNER = 'a90915719-hue';
+const REPO = 'ai-shorts-1';
+const PAGES_BASE = `https://${OWNER}.github.io/${REPO}`;
+const API_BASE = `https://api.github.com/repos/${OWNER}/${REPO}/contents`;
+const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main`;
+
+// Built-in fallback items so today's 4 ranking Shorts load instantaneously even if GitHub API rate-limits
+const FALLBACK_OUTBOX_1 = [
+  {
+    folder: '2026-11-27_rank_gov_subsidy_top3',
+    mp4: 'rank_gov_subsidy_top3.mp4',
+    thumb: 'rank_gov_subsidy_top3_thumb.png',
+    meta: 'rank_gov_subsidy_top3_meta.json',
+    title: '정부지원금, 어디서 조회할까? 공식 사이트 3곳 (보조금24·복지로·소상공인24) #정부지원금 #보조금24 #복지로 #Shorts',
+    desc: '정부지원금·복지혜택을 조회하는 공식 사이트 3곳입니다.\n· 보조금24 — 정부24(gov.kr)\n· 복지로(bokjiro.go.kr)\n· 소상공인24(sbiz.or.kr)\n세 곳 다 무료입니다.\n말로 물어보는 국민 AI 신호등: https://a90915719-hue.github.io/signal-ai/'
+  },
+  {
+    folder: '2026-11-27_rank_kpop_top10',
+    mp4: 'rank_kpop_top10.mp4',
+    thumb: 'rank_kpop_top10_thumb.png',
+    meta: 'rank_kpop_top10_meta.json',
+    title: 'Most Subscribed K-Pop Groups on YouTube 2026 — TOP 10 🎤 #kpop #blackpink #bts #shorts',
+    desc: 'The 10 most-subscribed K-pop groups on YouTube (official group channels): 1. BLACKPINK (102M), 2. BTS (86.5M), 3. Stray Kids (25.8M)... #kpop #blackpink #bts #shorts'
+  },
+  {
+    folder: '2026-11-27_rank_zodiac_2027',
+    mp4: 'rank_zodiac_2027.mp4',
+    thumb: 'rank_zodiac_2027_thumb.png',
+    meta: 'rank_zodiac_2027_meta.json',
+    title: '2027 정미년 돈 붙는 띠 TOP 12, 1위는? #2027운세 #띠별운세 #재물운 #천명원 #Shorts',
+    desc: '2027년 정미년(丁未) 붉은 양의 해, 돈 붙는 띠 TOP 12 정리표입니다.\n천명원 만세력: https://a90915719-hue.github.io/cheonmyeongwon-saju/'
+  },
+  {
+    folder: '2026-11-27_rank_welfare_2027',
+    mp4: 'rank_welfare_2027.mp4',
+    thumb: 'rank_welfare_2027_thumb.png',
+    meta: 'rank_welfare_2027_meta.json',
+    title: '2027년 기초생활수급·주거급여, 가구원 수별로 얼마나 나올까? #기초생활수급 #주거급여 #2027 #Shorts',
+    desc: '2027년 보건복지부·국토교통부 확정 고시 기준 가구원 수별 생계급여·주거급여(천안 4급지) 정리표입니다.\n복지로: https://www.bokjiro.go.kr/'
+  }
+];
+
+let currentTab = 'outbox_1';
+let cacheData = { outbox_1: null, outbox_2: null, docs: null };
+let deferredPrompt = null;
+
+// Service Worker Registration (Real file sw.js, no blob:)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
+// Detect environment for 1-sec install
+const ua = navigator.userAgent.toLowerCase();
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+const isKakao = ua.includes('kakaotalk');
+const isIOS = /iphone|ipad|ipod/.test(ua);
+
+if (isStandalone) {
+  document.getElementById('installBar').classList.add('hidden');
+} else if (isKakao) {
+  document.getElementById('installSub').textContent = '카톡 브라우저에서는 외부 브라우저로 열면 1초 설치됩니다';
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBar').classList.remove('hidden');
+});
+
+document.getElementById('btnInstall').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      showToast('✅ 홈 화면에 앱 설치 완료!');
+      document.getElementById('installBar').classList.add('hidden');
+    }
+    deferredPrompt = null;
+    return;
+  }
+  if (isKakao) {
+    openModal(
+      '💬 카카오톡에서 1초 앱 설치하기',
+      '카카오톡 내부 브라우저에서는 보안상 앱 설치 버튼이 막혀 있습니다. 아래 2단계만 누르면 바로 설치됩니다!',
+      '1. 화면 우측 하단 <b>[ ⋮ ]</b> 버튼 누르기<br>2. <b>[다른 브라우저로 열기]</b> 선택<br>3. 열린 화면 상단 <b>[1초 설치]</b> 버튼 터치!'
+    );
+  } else if (isIOS) {
+    openModal(
+      '🍎 아이폰 1초 앱 설치하기',
+      'Safari 브라우저에서 홈 화면에 바로 앱 아이콘을 추가할 수 있습니다.',
+      '1. 하단 가운데 <b>[공유 버튼 ⬆]</b> 터치<br>2. 아래로 내려 <b>[홈 화면에 추가]</b> 선택<br>3. 우측 상단 <b>[추가]</b> 누르면 끝!'
+    );
+  } else {
+    openModal(
+      '📱 스마트폰 홈 화면에 설치하기',
+      '브라우저 메뉴에서 바로 앱으로 설치할 수 있습니다.',
+      '1. 브라우저 우측 상단 <b>[ ⋮ ]</b> 메뉴 누르기<br>2. <b>[앱 설치]</b> 또는 <b>[홈 화면에 추가]</b> 선택<br>3. <b>[설치]</b> 누르면 바탕화면에 로고가 생성됩니다!'
+    );
+  }
+});
+
+function openModal(title, desc, stepsHtml) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDesc').textContent = desc;
+  document.getElementById('modalSteps').innerHTML = stepsHtml;
+  document.getElementById('installModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('installModal').classList.remove('open');
+}
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+async function copyText(txt, okMsg) {
+  try {
+    await navigator.clipboard.writeText(txt);
+    showToast(okMsg || '📋 복사 완료!');
+  } catch {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast(okMsg || '📋 복사 완료!');
+  }
+}
+
+async function fetchOutbox(boxName) {
+  try {
+    const res = await fetch(`${API_BASE}/inbox/${boxName}`);
+    if (!res.ok) throw new Error('API limit');
+    const dirs = (await res.json()).filter((x) => x.type === 'dir').sort((a, b) => b.name.localeCompare(a.name));
+    const items = await Promise.all(dirs.slice(0, 14).map(async (d) => {
+      try {
+        const fRes = await fetch(`${API_BASE}/inbox/${boxName}/${encodeURIComponent(d.name)}`);
+        const files = await fRes.json();
+        const mp4 = files.find((f) => f.name.endsWith('.mp4'))?.name || 'video.mp4';
+        const thumb = files.find((f) => f.name.endsWith('.png'))?.name || 'thumb.png';
+        const metaFile = files.find((f) => f.name.endsWith('meta.json'))?.name;
+        let title = d.name;
+        let desc = '';
+        if (metaFile) {
+          try {
+            const mRes = await fetch(`${PAGES_BASE}/inbox/${boxName}/${d.name}/${metaFile}`);
+            if (mRes.ok) {
+              const m = await mRes.json();
+              if (m.title) title = m.title;
+              if (m.description) desc = m.description;
+            }
+          } catch {}
+        }
+        return { folder: d.name, mp4, thumb, title, desc };
+      } catch {
+        return { folder: d.name, mp4: 'video.mp4', thumb: 'thumb.png', title: d.name, desc: '' };
+      }
+    }));
+    return items;
+  } catch {
+    return boxName === 'outbox_1' ? FALLBACK_OUTBOX_1 : [];
+  }
+}
+
+function renderOutbox(boxName, items) {
+  const el = document.getElementById('content');
+  if (!items || items.length === 0) {
+    el.innerHTML = `<div class="loading">표시할 쇼츠가 없습니다. 잠시 후 새로고침을 눌러주세요.</div>`;
+    return;
+  }
+  const isPc2 = boxName === 'outbox_2';
+  el.innerHTML = items.map((it, idx) => {
+    const base = `${PAGES_BASE}/inbox/${boxName}/${it.folder}`;
+    const mp4Url = `${base}/${it.mp4}`;
+    const thumbUrl = `${base}/${it.thumb}`;
+    const playUrl = `${base}/play.html`;
+    const datePart = it.folder.slice(0, 10);
+    const copyPayload = `${it.title}\n\n${it.desc || ''}`.trim();
+    const safeId = `item_${boxName}_${idx}`;
+    window.__copyMap = window.__copyMap || {};
+    window.__copyMap[safeId] = { payload: copyPayload, playUrl };
+    return `
+      <article class="card">
+        <div class="card-head">
+          <span class="tag ${isPc2 ? 'pc2' : ''}">${isPc2 ? '⚡ 2호기 제출' : '🔥 1호기 제출'}</span>
+          <span class="date-lbl">${datePart}</span>
+        </div>
+        <div class="card-title">${escapeHtml(it.title)}</div>
+        <div class="media-box">
+          <video controls playsinline preload="none" poster="${thumbUrl}" src="${mp4Url}"></video>
+        </div>
+        <div class="card-actions">
+          <button class="act gold" onclick="copyText(window.__copyMap['${safeId}'].payload, '📋 제목·설명 복사 완료!')">📋 제목·설명 복사</button>
+          <a class="act blue" href="${mp4Url}" download="${it.mp4}">📥 MP4 저장</a>
+          <button class="act dark" onclick="copyText(window.__copyMap['${safeId}'].playUrl, '🔗 검수링크 복사 완료!')">🔗 검수링크 복사</button>
+          <a class="act pink" href="${playUrl}" target="_blank" rel="noopener">▶ 전체화면 재생</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+async function renderDocs() {
+  const el = document.getElementById('content');
+  el.innerHTML = `<div class="loading">피클비서 최신 지시서를 불러오는 중...</div>`;
+  try {
+    const [d1, d2] = await Promise.all([
+      fetch(`${RAW_BASE}/inbox/${encodeURIComponent('1호기_할일.md')}?t=${Date.now()}`).then((r) => r.text()),
+      fetch(`${RAW_BASE}/inbox/${encodeURIComponent('2호기_할일.md')}?t=${Date.now()}`).then((r) => r.text())
+    ]);
+    cacheData.docs = { d1, d2 };
+    el.innerHTML = `
+      <div class="doc-card">
+        <h3>📬 1호기 할일 (최신 지시서)</h3>
+        <div class="doc-pre">${escapeHtml(d1)}</div>
+      </div>
+      <div class="doc-card">
+        <h3>📬 2호기 할일 (최신 지시서)</h3>
+        <div class="doc-pre">${escapeHtml(d2)}</div>
+      </div>
+    `;
+  } catch {
+    el.innerHTML = `<div class="loading">지시서를 불러오지 못했습니다. 네트워크 확인 후 새로고침해 주세요.</div>`;
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+async function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
+  if (tab === 'docs') {
+    await renderDocs();
+    return;
+  }
+  const el = document.getElementById('content');
+  if (!cacheData[tab]) {
+    if (tab === 'outbox_1') renderOutbox('outbox_1', FALLBACK_OUTBOX_1);
+    else el.innerHTML = `<div class="loading">2호기 쇼츠 목록을 불러오는 중...</div>`;
+    cacheData[tab] = await fetchOutbox(tab);
+  }
+  renderOutbox(tab, cacheData[tab]);
+}
+
+async function refreshAll() {
+  cacheData = { outbox_1: null, outbox_2: null, docs: null };
+  showToast('↻ 최신 목록 동기화 중...');
+  await switchTab(currentTab);
+  showToast('✅ 최신 동기화 완료!');
+}
+
+switchTab('outbox_1');
+</script>
+</body>
+</html>
